@@ -1,0 +1,217 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+body {
+
+background-image: url(images/back.avif);
+background-size: cover;
+font-family: 'Arial', sans-serif;
+}
+
+nav {
+background: rgba(255, 255, 255, 255);
+box-shadow: 0 8px 32px 0 rgba(211, 195, 212, 0.37);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+border-radius: 10px;
+border: 2px solid rgba(219, 190, 190, 0.18);
+}
+
+.nav-item:hover {
+background: rgba(240, 240, 210, 40);
+box-shadow: 0 8px 32px 0 rgba(195, 164, 199, 0.37);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+border-radius: 10px;
+border: 1px solid rgba(167, 139, 139, 0.18);
+}
+
+.btn {
+background: rgba(6, 170, 14, 0.25);
+box-shadow: 0 8px 32px 0 rgba(69, 35, 73, 0.37);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+border-radius: 10px;
+border: 2px solid rgba(8, 8, 8, 0.18);
+color: black;
+}
+
+.btn:hover {
+background: rgba(25, 23, 25, 0.25);
+box-shadow: 0 8px 32px 0 rgba(69, 35, 73, 0.37);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+border-radius: 10px;
+border: 2px solid rgba(8, 8, 8, 0.18);
+color: black;
+ } 
+.logo {
+height: 30%;
+width: 30%;
+}
+
+.menu-logo {
+height: 30%;
+width: 30%;
+mix-blend-mode: multiply;
+}
+
+.img {
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(52, 54, 91, 0.563);
+backdrop-filter: blur(6px);
+-webkit-backdrop-filter: blur(6px);
+border: 1px solid rgba(7, 6, 6, 0.4);
+}
+
+.footer {
+text-align: center;
+padding: 20px;
+background-color: #f1f1f1;
+}
+
+/* Glassmorphism styles for users.php and category.php-------------------------------------------------------------- */
+.glass-card {
+backdrop-filter: blur(10px);
+background: rgba(255, 255, 255, 0.1);
+border-radius: 15px;
+border: 1px solid rgba(255, 255, 255, 0.2);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+padding: 20px;
+margin-bottom: 20px;
+color: #fff;
+}
+
+.glass-card:hover {
+box-shadow: 0 4px 30px rgba(52, 54, 91, 0.563);
+backdrop-filter: blur(6px);
+-webkit-backdrop-filter: blur(6px);
+border: 2px solid rgba(243, 239, 239, 0.4);
+}
+
+.glass-table {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 10px;
+overflow: hidden;
+}
+
+.glass-table th,
+.glass-table td {
+background: rgba(255, 255, 255, 0.1);
+color: #ddd;
+}
+
+.glass-table th {
+backdrop-filter: blur(5px);
+color: #fff;
+}
+
+.glass-table tbody tr:hover {
+background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-warning {
+color: #fff;
+}
+
+.btn-warning:hover {
+background-color: #e0a800;
+border-color: #d39e00;
+}
+
+.btn-danger {
+color: #fff;
+}
+
+.btn-danger:hover {
+background-color: #c82333;
+border-color: #bd2130;
+}
+
+.btn-success {
+color: #fff;
+}
+
+.btn-success:hover {
+background-color: #c82333;
+border-color: #bd2130;
+}
+
+/* Glassmorphism styles for category.php-------------------------------------------------------- */
+.glass-form {
+backdrop-filter: blur(10px);
+background: rgba(255, 255, 255, 0.1);
+border-radius: 15px;
+border: 1px solid rgba(255, 255, 255, 0.2);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+padding: 20px;
+margin-bottom: 20px;
+color: #fff;
+}
+
+.glass-form input,textarea
+.glass-form button {
+    background: rgba(255, 255, 255, 0.1);
+color: #fff;
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-radius: 5px;
+padding: 10px;
+margin-bottom: 10px;
+}
+.glass-form input:focus{
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+}
+.glass-form button:hover {
+background-color: #11438f;
+border-color: #2d302e;
+}
+
+/* glass style for admin dashboard index.php---------------------------------------------  */
+
+
+/* Sidebar styles */
+.sidebar {
+height: 100vh;
+width: 250px;
+position: fixed;
+top: 0;
+left: 0;
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+padding-top: 20px;
+}
+
+.sidebar a {
+padding: 15px;
+text-decoration: none;
+font-size: 18px;
+color: white;
+display: block;
+}
+
+.sidebar a:hover {
+background-color: rgba(255, 255, 255, 0.2);
+}
+
+.content {
+margin-left: 270px;
+padding: 20px;
+}
+
+/* Responsive Design for Sidebar */
+@media (max-width: 768px) {
+.sidebar {
+    width: 100px;
+}
+
+.sidebar a {
+    font-size: 14px;
+    padding: 10px;
+}
+
+.content {
+    margin-left: 120px;
+}
+}
+

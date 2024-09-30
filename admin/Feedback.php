@@ -16,32 +16,33 @@ if(0==$_SESSION['ROLE']){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>users</title>
+    <title>Feedback</title>
     <?php include 'css.php'; ?>
 </head>
 
 <body>
-    <?php include 'menu.php'; ?>
+    <div class="page-wrapper">
+        
+        <div class="content">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="glass-card">
+                            <h2 class="text-center text-light mb-3">feedback Data</h2>
+                            <div class="table-responsive glass-table mb-3">
+                                <table class="table table-striped table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">message</th>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="glass-card">
-                    <h2 class="text-center text-light mb-3">feedback Data</h2>
-                    <div class="table-responsive glass-table mb-3">
-                        <table class="table table-striped table-hover">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">message</th>
-
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
                                 $data = $obj->viewfeedback();
                                 while ($row = mysqli_fetch_assoc($data)) {
                                     echo "<tr>
@@ -59,24 +60,20 @@ if(0==$_SESSION['ROLE']){
                                           </tr>";
                                 }
                                 ?>
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <?php include 'footer.php'; ?> -->
-
-
     <?php include 'js.php'; ?>
 </body>
 
 </html>
-
-<?php }else{
-            
+<?php }else{            
             include 'logout.php';
-        }
-        
-        ?>
+        }        
+?>

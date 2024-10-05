@@ -147,10 +147,20 @@ padding: 20px;
 margin-bottom: 20px;
 color: #fff;
 }
+/* Additional styling for textarea to match inputs */
+textarea.form-control {
+   
+background: rgba(255, 255, 255, 0.1);
+color: #fff;
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-radius: 5px;
+padding: 10px;
+margin-bottom: 10px;
+}
 
-.glass-form input,textarea
+.glass-form input,
 .glass-form button {
-    background: rgba(255, 255, 255, 0.1);
+background: rgba(255, 255, 255, 0.1);
 color: #fff;
 border: 1px solid rgba(255, 255, 255, 0.2);
 border-radius: 5px;

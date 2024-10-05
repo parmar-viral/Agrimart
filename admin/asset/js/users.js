@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("signupForm");
 
-    const name = document.getElementById("name");
-    const surname = document.getElementById("surname");
+    const name = document.getElementById("fname");
+    const surname = document.getElementById("lname");
     const username = document.getElementById("username");
     const email = document.getElementById("email");
     const password = document.getElementById("password");
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const usernameError = document.getElementById("usernameError");
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
-    const confirmPasswordError = document.getElementById("confirmPasswordError");
+    const confirmPasswordError = document.getElementById("confirmpasswordError");
     const mobileError = document.getElementById("mobileError");
 
     let touchedFields = {};
@@ -32,18 +32,18 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function addValidationListeners(field, validationFunction, errorElement) {
-        field.addEventListener("blur", function() {
+        field.addEventListener("blur", function () {
             if (touchedFields[field.id]) {
                 validateField(field, validationFunction, errorElement);
             }
         });
 
-        field.addEventListener("focus", function() {
+        field.addEventListener("focus", function () {
             touchedFields[field.id] = true;
             clearError(field, errorElement);
         });
 
-        field.addEventListener("input", function() {
+        field.addEventListener("input", function () {
             if (touchedFields[field.id]) {
                 validateField(field, validationFunction, errorElement);
             }
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
     addValidationListeners(confirmPassword, validateConfirmPassword, confirmPasswordError);
     addValidationListeners(mobile, validateMobile, mobileError);
 
-    form.addEventListener("submit", async function(event) {
+    form.addEventListener("submit", async function (event) {
         if (!validateForm() || !(await validateUniqueEntries())) {
             event.preventDefault();
         }
@@ -98,16 +98,25 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         password.textContent = "";
         return true;
+
+
     }
 
     function validateConfirmPassword() {
+        // First, validate the password itself
+        if (!validatePassword()) {
+            return false; // If the password isn't valid, don't bother checking for matching
+        }
+
+        // Check if the password and confirm password match
         if (password.value !== confirmPassword.value) {
             confirmPasswordError.textContent = "Passwords do not match.";
             return false;
-        } else {
-            confirmPasswordError.textContent = "";
-            return true;
         }
+
+        // If both passwords match, clear the error message
+        confirmPasswordError.textContent = "";
+        return true;
     }
 
     function validateMobile() {
@@ -142,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 usernameError.textContent = "Username is already taken.";
                 isValid = false;
             }
-
+            addValidationListeners(confirmPassword, validateConfirmPassword, confirmPasswordError);
             if (emailData.exists) {
                 emailError.textContent = "Email is already registered.";
                 isValid = false;

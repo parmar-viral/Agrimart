@@ -22,7 +22,7 @@ if(0==$_SESSION['ROLE']){
 
 <body>
     <div class="page-wrapper">
-        
+        <?php include 'sidebar.php'; ?>
         <div class="content">
             <div class="container mt-5">
                 <div class="row justify-content-center">

@@ -31,6 +31,7 @@ if (0 == $_SESSION['ROLE']) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
     <?php include 'css.php'; ?>
+    <script src="asset/js/users.js" defer></script>
 </head>
 
 <body>
@@ -51,41 +52,47 @@ if (0 == $_SESSION['ROLE']) {
                                                 class="bi bi-person-circle"></i></span>
                                         <input type="text" name="fname" id="fname" class="m-1 p-2 form-control"
                                             placeholder="First Name" required>
+                                            <span id="fnameError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i
                                                 class="bi bi-person-circle"></i></span>
                                         <input type="text" name="lname" id="lname" class="m-1 p-2 form-control"
                                             placeholder="Last Name" required>
+                                            <span id="lnameError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i class="bi bi-envelope-at"></i></span>
                                         <input type="email" name="email" id="email" class="m-1 p-2 form-control"
                                             placeholder="Email" required>
+                                            <span id="emailError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i
                                                 class="bi bi-person-circle"></i></span>
                                         <input type="text" name="username" id="username" class="m-1 p-2 form-control"
                                             placeholder="Username" required>
+                                            <span id="usernameError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i class="bi bi-shield-lock"></i></span>
                                         <input type="password" name="password" id="password"
                                             class="m-1 p-2 form-control" placeholder="Password" required minlength="6">
+                                            <span id="passwordError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2" id="confirmpassword"><i
                                                 class="bi bi-shield-lock"></i></span>
                                         <input type="password" name="confirmpassword" id="confirmpassword"
                                             class="m-1 p-2 form-control" placeholder="Confirm Password" required>
-                                        <span id="confirmPasswordError"></span>
+                                        <span id="confirmpasswordError"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i
                                                 class="bi bi-telephone-fill"></i></span>
                                         <input type="tel" name="mobile" id="mobile" class="m-1 p-2 form-control"
                                             placeholder="Mobile No" required>
+                                            <span id="mobileError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i class="bi bi-house"></i></span>

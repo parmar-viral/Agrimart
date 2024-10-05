@@ -122,6 +122,8 @@ input:focus {
     -webkit-backdrop-filter: blur(6px);
     border: 2px solid rgba(243, 239, 239, 0.4);
 }
+/* glass styles for footer.php---------------------------------------------------------------------- */
+
 .footer {
     display: flex;
     justify-content: space-around;
@@ -134,16 +136,6 @@ input:focus {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color:black;
 }
-/* glass styles for footer.php---------------------------------------------------------------------- */
-.footer {
-    background: rgba(255, 255, 255, 0.1); /* Glassmorphism effect */
-    backdrop-filter: blur(10px); /* Blur effect for the glassmorphism */
-    border-radius: 15px; /* Rounded corners */
-    color: #fff; /* White text */
-    padding: 20px; /* Padding for spacing */
-    margin-top: 20px; /* Space from above */
-}
-
 .footer h5 {
     margin-bottom: 15px;
     font-weight: bold; /* Bold heading */
@@ -159,7 +151,7 @@ input:focus {
 
 .footer a:hover {
     text-decoration: underline;
-    color: #f1c40f; /* Highlight color on hover */
+    color: #111111; /* Highlight color on hover */
 }
 
 .social-media-icons {

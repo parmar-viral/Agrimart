@@ -75,13 +75,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function validatePassword() {
-        if (password.value.length < 6) {
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        // Check password length
+        if (password.length < 6) {
             passwordError.textContent = "Password must be at least 6 characters long.";
             return false;
-        } else {
-            passwordError.textContent = "";
-            return true;
         }
+        // Check if the password matches the pattern
+        if (!passwordPattern.test(password.value)) {
+            passwordError.textContent = "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.";
+            return false;
+        }
+        password.textContent = "";
+        return true;
     }
 
     function validateForm() {

@@ -31,8 +31,6 @@ include_once ('admin/controller/database/db.php');
         include 'menu.php';
     }
     ?>
-
-
     <div class="container ">
         <div class="row mt-1">
             <img src="asset/css/images/intro.jpeg" alt="" height="500px" class="intro-img mt-3">
@@ -83,10 +81,8 @@ include_once ('admin/controller/database/db.php');
                         </button>
                     </form>
                     <?php
-
-                        } else {
-                           
-                            ?>
+                        } else {                           
+                    ?>
                     <form class="text-center" method="POST" action="login.php">
                         <input type="hidden" name="role" value="<?php echo $role; ?>">
                         <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">

@@ -30,7 +30,7 @@
                     <a class="nav-link " href="settings.php">Settings</a>
                 </li>
                 <li class="nav-item toggle">
-                    <a class="nav-link  " href="addtocart.php"><i class="bi bi-cart"></i></a>
+                    <a class="nav-link  " href="cart.php"><i class="bi bi-cart"></i></a>
                 </li>
 
             </ul>

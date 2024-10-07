@@ -29,9 +29,13 @@ $sql="CREATE TABLE `cart_items` (
     `product_name` VARCHAR(255) NOT NULL,
     `product_price` DECIMAL(10,2) NOT NULL,
     `quantity` INT NOT NULL,
+    `price` DECIMAL(10,2),
+    `total_price` DECIMAL(10,2),
+     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
     FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE
 )";
-if($sql==true){
+if(mysqli_query($conn,$sql)){
 echo 'created';
 }
 else{

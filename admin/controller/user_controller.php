@@ -62,7 +62,8 @@ if (isset($_POST['submit'])) {
 
     if ($result) {
         $_SESSION['message'] = "Registration successful!";
-        header("Location: users.php");
+        
+        header("Location: login.php");
         exit();
     } else {
         echo "You are not registered. Please try again.";

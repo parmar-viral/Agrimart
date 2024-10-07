@@ -1,96 +1,128 @@
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "Agro";
-
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $database);
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-// mysqli_close($conn);
-
 session_start();
+include 'admin/controller/database/db.php'; // Database connection
+
+// Check if user is logged in
+if (!isset($_SESSION['ID'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$user_id = $_SESSION['ID'];
+
+// Fetch cart items for the logged-in user
+$sql = "SELECT * FROM cart_items WHERE user_id = '$user_id'";
+$res = mysqli_query($conn, $sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Cart</title>
+    <title>My Cart</title>
+    <style>
+    /* Glassmorphism Style */
+    .glass {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #333;
+    }
+
+    tr:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    </style>
     <?php include 'css.php'; ?>
 </head>
-<style>
-    .tbl {
-        background: rgba(255, 255, 255, 0.4);
-        border-radius: 16px;
-        border: 1px solid rgba(7, 6, 6, 0.4);
-    }
-</style>
 
 <body>
-    <?php
-    // Check the user's role and include the appropriate menu
-    if (isset($_SESSION['ROLE']) && $_SESSION['ROLE'] == 2) {
-        include 'menu2.php';
+    <?php include 'menu2.php'; ?>
+    <div class="row  d-flex  justify-content-center  mt-3 mb-3">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card mb-2">
+
+
+                    <div class="card-header text text-dark text-center">
+                        <h3>Your Cart</h3>
+                    </div>
+
+                    <div class="card-body text text-dark">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+    if (mysqli_num_rows($res) > 0) {
+        while ($row = mysqli_fetch_assoc($res)) {
+            echo '<tr>';
+            echo '<td>' . $row['product_name'] . '</td>';
+            echo '<td>$' . $row['product_price'] . '</td>';
+            echo '<td>' . $row['quantity'] . '</td>';
+            echo '<td>$' . $row['total_price'] . '</td>';
+            echo '<td>
+                <!-- Buy Form -->
+                <form method="post" action="buy.php">
+                    <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                    <button type="submit" class="btn">Buy</button>
+                </form>
+
+                <!-- Delete Form -->
+                <form method="post" action="">
+                    <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                    <button type="submit" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
+                </form>
+            </td>';
+            echo '</tr>';
+        }
     } else {
-        include 'menu.php';
+        echo '<tr><td colspan="5">Your cart is empty.</td></tr>';
     }
     ?>
-    <div class="container">
-        <div class="card mt-3 p-2 mb-3 text text-center">
-            <div class="card-header text text-dark text-center mb-3">
-                <h3>Shopping Cart</h3>
-            </div>
-            <table class="tbl table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price(₹)</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $total_price = 0; // Initialize $total_price
+                            </tbody>
 
-                    if (isset($_SESSION["cart"]) && !empty($_SESSION["cart"])) {
-                        foreach ($_SESSION["cart"] as $product_id => $item) {
-                            $total_item_price = $item["price"] * $item["quantity"];
-                            $total_price += $total_item_price;
-                            echo "<tr>
-                                <td>" . htmlspecialchars($item["name"]) . "</td>
-                                <td>$" . htmlspecialchars($item["price"]) . "</td>
-                                <td>" . htmlspecialchars($item["quantity"]) . "</td>
-                                <td>$" . htmlspecialchars($total_item_price) . "</td>
-                                <td>
-                                    <form method='POST' action='cash.php'>
-                                        <input type='hidden' name='product_id' value='" . htmlspecialchars($product_id) . "'>
-                                        
-                                        <button type='submit' name='deletefromcart' class='btn btn-danger'>Delete</button>
-                                  
-                                        <input type='hidden' name='product_id' value='" . htmlspecialchars($product_id) . "'>
-                                        
-                                        <button type='submit' name='buy' class='btn btn-danger'>buy</button>
-                                    </form>
-                                </td>
-                            </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5'>Cart is empty</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-            <h3>Total price: ₹<?php echo $total_price; ?></h3>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <?php include 'footer.php'; ?>
     <?php include 'js.php'; ?>
 </body>

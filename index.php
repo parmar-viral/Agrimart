@@ -185,5 +185,4 @@ include_once ('admin/controller/database/db.php');
     }
     </script>
 </body>
-
 </html>

@@ -26,9 +26,6 @@
                 <li class="nav-item ">
                     <a class="nav-link " href="feedback.php">Feedback</a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link " href="settings.php">Settings</a>
-                </li>
                 <li class="nav-item toggle">
                     <a class="nav-link  " href="cart.php"><i class="bi bi-cart"></i></a>
                 </li>

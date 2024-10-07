@@ -16,6 +16,10 @@ $totalUsers = $result->fetch_assoc()['total_users'];
 $query = "SELECT COUNT(*) as total_categories FROM categories";
 $result = $conn->query($query);
 $totalCategories = $result->fetch_assoc()['total_categories'];
+
+$query = "SELECT COUNT(*) as total_products FROM products";
+$result = $conn->query($query);
+$totalProducts = $result->fetch_assoc()['total_products'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +65,7 @@ $totalCategories = $result->fetch_assoc()['total_categories'];
                 <div class="card glass-card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total Products</h5>
-                        <p class="card-text display-4">100</p> <!-- Example static value -->
+                        <p class="card-text display-4"><?php echo htmlspecialchars($totalProducts); ?></p>
                         <a href="products.php" class="btn btn-primary">Manage Products</a>
                     </div>
                 </div>

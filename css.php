@@ -6,9 +6,7 @@
     <title>css</title>
     <link rel="stylesheet" href="asset/css/bootstrap.min.css">
     <link rel="stylesheet" href="asset/css/bootstrap.css">
-    <link rel="stylesheet" href="asset/css/glass.css">
-    <!-- <link rel="stylesheet" href="asset/css/glass2.css">     -->
-    
+    <link rel="stylesheet" href="asset/css/glass.css">    
 </head>
 <body>
     

@@ -99,9 +99,6 @@ if ($_SESSION['ROLE'] == 0) {
         </div>
     </div>
 
-
-
-
     <!-- Update Category Modal  -->
     <div class="modal fade" id="updateCategoryModal" tabindex="-1" aria-labelledby="updateCategoryModalLabel"
         aria-hidden="true">
@@ -138,7 +135,6 @@ if ($_SESSION['ROLE'] == 0) {
     }
     </script>
 </body>
-
 </html>
 <?php } else {
     include 'logout.php';

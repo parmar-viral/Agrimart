@@ -58,18 +58,29 @@ $res = mysqli_query($conn, $sql);
         text-align: center;
         color: #333;
     }
+
+    .btn {
+        padding: 5px 10px;
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
     </style>
     <?php include 'css.php'; ?>
 </head>
 
 <body>
     <?php include 'menu2.php'; ?>
-    <div class="row  d-flex  justify-content-center  mt-3 mb-3">
+    <div class="row d-flex justify-content-center mt-3 mb-3">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card mb-2">
-
-
                     <div class="card-header text text-dark text-center">
                         <h3>Your Cart</h3>
                     </div>
@@ -95,17 +106,19 @@ $res = mysqli_query($conn, $sql);
             echo '<td>' . $row['quantity'] . '</td>';
             echo '<td>$' . $row['total_price'] . '</td>';
             echo '<td>
-                <!-- Buy Form -->
-                <form method="post" action="buy.php">
-                    <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
-                    <button type="submit" class="btn">Buy</button>
-                </form>
+                <div class="btn-group">
+                    <!-- Buy Form -->
+                    <form method="post" action="buy.php">
+                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                        <button type="submit" class="btn">Buy</button>
+                    </form>
 
-                <!-- Delete Form -->
-                <form method="post" action="">
-                    <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
-                    <button type="submit" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
-                </form>
+                    <!-- Delete Form -->
+                    <form method="post" action="">
+                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                        <button type="submit" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
+                    </form>
+                </div>
             </td>';
             echo '</tr>';
         }
@@ -114,8 +127,6 @@ $res = mysqli_query($conn, $sql);
     }
     ?>
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>

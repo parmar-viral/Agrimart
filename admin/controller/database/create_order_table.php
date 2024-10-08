@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $servername = "localhost";
 $username = "root";
@@ -13,12 +16,14 @@ if (!$conn) {
 
 // Create the `orders` table
 $sql = "CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT  UNSIGNED,
+    product_id INT,
+    quantity INT,
     total_price DECIMAL(10, 2),
-    payment_status VARCHAR(50),
-    order_status VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
 )";
 
 

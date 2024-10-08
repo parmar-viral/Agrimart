@@ -22,14 +22,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="product.php"> Products</a>
                 </li>
-                
+                <li class="nav-item">
+                <a class="nav-link" href="orders.php">My Orders</a> <!-- New Menu Item -->
+            </li>
                 <li class="nav-item ">
                     <a class="nav-link " href="feedback.php">Feedback</a>
                 </li>
                 <li class="nav-item toggle">
                     <a class="nav-link  " href="cart.php"><i class="bi bi-cart"></i></a>
                 </li>
-
             </ul>
             <?php
             include 'admin/error.php';

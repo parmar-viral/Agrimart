@@ -9,36 +9,37 @@ if (!isset($_SESSION['ID'])) {
 }
 
 $user_id = $_SESSION['ID'];
-$item_id = $_POST['item_id'];
 
-// Fetch the cart item details from the database
-$sql = "SELECT * FROM cart_items WHERE user_id = '$user_id' AND product_id = '$item_id'";
-$result = mysqli_query($conn, $sql);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $product_id = $_POST['item_id'];
 
-if (mysqli_num_rows($result) > 0) {
-    $cart_item = mysqli_fetch_assoc($result);
+    // Fetch product details from cart
+    $sql = "SELECT * FROM cart_items WHERE user_id = ? AND product_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $user_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    // Calculate the total price (assuming 'total_price' already contains the correct value)
-    $total_price = $cart_item['total_price'];
+    if ($result->num_rows > 0) {
+        $item = $result->fetch_assoc();
 
-    // Insert the order into the `orders` table
-    $insert_order_sql = "INSERT INTO orders (user_id, total_price, payment_status, order_status) 
-                         VALUES ('$user_id', '$total_price', 'Pending', 'Processing')";
+        // Insert into orders table
+        $sql = "INSERT INTO orders (user_id, product_id, quantity, total_price) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iiid", $user_id, $product_id, $item['quantity'], $item['total_price']);
+        $stmt->execute();
 
-    if (mysqli_query($conn, $insert_order_sql)) {
-        // Optionally, you can clear the cart after successful order
-        $delete_cart_sql = "DELETE FROM cart_items WHERE user_id = '$user_id' AND product_id = '$item_id'";
-        mysqli_query($conn, $delete_cart_sql);
+        // Delete from cart after purchase
+        $sql = "DELETE FROM cart_items WHERE user_id = ? AND product_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $user_id, $product_id);
+        $stmt->execute();
 
-        // Redirect to an order confirmation page
+        // Redirect to order success page
         header('Location: confirm_order.php');
         exit();
     } else {
-        echo "Error placing order: " . mysqli_error($conn);
+        echo "Product not found in your cart.";
     }
-} else {
-    echo "No item found in your cart.";
 }
-
-mysqli_close($conn);
 ?>

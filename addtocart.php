@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // If product already exists in the cart, update quantity and total price
         $update_sql = "UPDATE cart_items 
                        SET quantity = quantity + 1, 
-                           total_price = (quantity + 1) * product_price 
+                           total_price = total_price + $product_price 
                        WHERE user_id = '$user_id' AND product_id = '$product_id'";
         mysqli_query($conn, $update_sql);
     } else {

@@ -13,6 +13,19 @@ $user_id = $_SESSION['ID']; // Retrieve the user ID from session
 $sql = "SELECT * FROM orders WHERE user_id = '$user_id'";
 $result = mysqli_query($conn, $sql);
 
+// Check if delete order request is made
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $order_id = $_POST['order_id'];
+    
+    // Prepare the delete query
+    $delete_sql = "DELETE FROM orders WHERE id = '$order_id' AND user_id = '$user_id'";
+    mysqli_query($conn, $delete_sql);
+    
+    // Optionally, you can redirect to the same page to refresh the orders list
+    header('Location: orders.php');
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -20,55 +33,6 @@ $result = mysqli_query($conn, $sql);
 
 <head>
     <title>My Orders</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: url('path-to-your-background-image.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        .container {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .glass-table-container {
-            background: rgba(255, 255, 255, 0.1); /* Light background with transparency */
-            backdrop-filter: blur(10px); /* Frosted glass effect */
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 100%;
-            max-width: 800px; /* Limit the width for larger screens */
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            color: #fff; /* Text color */
-            border-radius: 10px; /* Rounded corners for table */
-            overflow: hidden; /* Ensure border radius works */
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        th {
-            background-color: rgba(255, 255, 255, 0.2); /* Header background */
-        }
-
-        tr:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Row hover effect */
-        }
-
-        .no-orders {
-            color: #f00; /* Color for no orders found */
-        }
-    </style>
     <?php include 'css.php';?>
 </head>
 
@@ -87,6 +51,7 @@ $result = mysqli_query($conn, $sql);
                         <th>Quantity</th>
                         <th>Total Price</th>
                         <th>Order Date</th>
+                        <th>Actions</th> <!-- Added actions column -->
                     </tr>
                 </thead>
                 <tbody>
@@ -99,10 +64,16 @@ $result = mysqli_query($conn, $sql);
                                     <td>{$row['quantity']}</td>
                                     <td>{$row['total_price']}</td>
                                     <td>{$row['order_date']}</td>
+                                    <td>
+                                        <form method='POST' action='' style='display:inline;'>
+                                            <input type='hidden' name='order_id' value='{$row['id']}'>
+                                            <button type='submit' name='delete' class='btn'>Delete</button>
+                                        </form>
+                                    </td>
                                   </tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='5' class='text-center no-orders'>No orders found.</td></tr>";
+                        echo "<tr><td colspan='6' class='text-center no-orders'>No orders found.</td></tr>";
                     }
                     ?>
                 </tbody>

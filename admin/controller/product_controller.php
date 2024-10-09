@@ -46,7 +46,7 @@ class products
         $file=$_FILES['product_image']['name'];
 	    $tname=$_FILES['product_image']['tmp_name'];
 
-        $folder="./asset/image/".$file;
+        $folder="../asset/image/".$file;
 	    move_uploaded_file($tname,$folder);
 
         $product_category=$_POST['product_category'];

@@ -224,4 +224,7 @@ padding: 20px;
     margin-left: 120px;
 }
 }
-
+/* glass styles for product image----------------------------- */
+.products{
+    mix-blend-mode: multiply;
+}

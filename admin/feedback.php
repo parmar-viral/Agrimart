@@ -43,7 +43,7 @@ if(0==$_SESSION['ROLE']){
                                     </thead>
                                     <tbody>
                                         <?php
-                                $data = $obj->viewfeedback();
+                                $data = $obj->view();
                                 while ($row = mysqli_fetch_assoc($data)) {
                                     echo "<tr>
                                             <th scope='row'>{$row['user_id']}</th>

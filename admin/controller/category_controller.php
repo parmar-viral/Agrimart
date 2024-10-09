@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['submit'])) {
         $categoryName = $categoryController->db->real_escape_string($_POST['category_name']);
         if ($categoryController->addCategory($categoryName)) {
-            $_SESSION['message'] = "Category added successfully!";
+            $_SESSION['msg'] = "Category added successfully!";
             header("Location: category.php");
             exit();
         } else {
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $categoryName = $categoryController->db->real_escape_string($_POST['category_name']);
         
         if ($categoryController->updateCategory($categoryId, $categoryName)) {
-            $_SESSION['message'] = "Category updated successfully!";
+            $_SESSION['msg'] = "Category updated successfully!";
             header("Location: category.php");
             exit();
         } else {
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (isset($_POST['delete'])) {
         $categoryId = $_POST['category_id'];
         if ($categoryController->deleteCategory($categoryId)) {
-            $_SESSION['message'] = "Category deleted successfully!";
+            $_SESSION['msg'] = "Category deleted successfully!";
             header("Location: category.php");
             exit();
         } else {

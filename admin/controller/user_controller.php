@@ -61,12 +61,38 @@ if (isset($_POST['submit'])) {
     $result = $obj->insert($fname, $lname, $email, $username, $pass, $confirm_password, $mobile, $address, $role);
 
     if ($result) {
-        $_SESSION['message'] = "Registration successful!";
+        $_SESSION['msg'] = "Registration successful!";     
         
-        header("Location: login.php");
+    } else {
+        $_SESSION['msg'] = "You are not registered. Please try again.";
+    }
+    header("Location: login.php");
+    exit();
+}elseif(isset($_POST['add_user'])){
+    $fname = $obj->db->real_escape_string($_POST['fname']);
+    $lname = $obj->db->real_escape_string($_POST['lname']);
+    $email = $obj->db->real_escape_string($_POST['email']);
+    $username = $obj->db->real_escape_string($_POST['username']);
+    $pass = $obj->db->real_escape_string(md5($_POST['password']));
+    $confirm_password = $obj->db->real_escape_string(md5($_POST['confirmpassword']));
+    $mobile = $obj->db->real_escape_string($_POST['mobile']);
+    $address = $obj->db->real_escape_string($_POST['address']);
+    $role = $obj->db->real_escape_string($_POST['role']);
+
+    if ($pass !== $confirm_password) {
+        echo "Passwords do not match. Please try again.";
+        exit();
+    }
+
+    $result = $obj->insert($fname, $lname, $email, $username, $pass, $confirm_password, $mobile, $address, $role);
+
+    if ($result) {
+        $_SESSION['msg'] = "User Added successfully!";
+        
+        header("Location: users.php");
         exit();
     } else {
-        echo "You are not registered. Please try again.";
+        echo "Failed To Add User.";
     }
 }
 elseif (isset($_POST['update'])) {
@@ -94,7 +120,7 @@ elseif (isset($_POST['update'])) {
     if ($res) {
         header("location:users.php");
     } else {
-        echo "not deleted";
+        echo "";
     }
 }
 ?>

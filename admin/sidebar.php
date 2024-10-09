@@ -14,7 +14,7 @@
         <a href="category.php"><i class="bi bi-list"></i> Categories</a>
         <a href="products.php"><i class="bi bi-box"></i> Products</a>
         <a href="orders.php"><i class="bi bi-cart"></i> Orders</a>
-        <a href="Feedback.php"><i class="bi bi-chat-dots"></i> Feedback</a>  
+        <a href="feedback.php"><i class="bi bi-chat-dots"></i> Feedback</a>  
         <a href="analytics.php"><i class="bi bi-bar-chart"></i> Analytics</a>  
         <a href="settings.php"><i class="bi bi-gear"></i> Settings</a>
         <a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>

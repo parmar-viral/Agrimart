@@ -23,6 +23,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['ID'] = $row['id'];
             $_SESSION['ROLE'] = $row['user_role'];
             $_SESSION['USERNAME'] = $row['username'];
+            $_SESSION['EMAIL'] = $row['email'];
             
             // Redirect based on user role
             if ($row['user_role'] == 0 || $row['user_role'] == 1) {
@@ -60,7 +61,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-   
+
     <?php include 'menu.php';?>
     <div class="container-fluid">
         <div class="row d-flex justify-content-center mt-3">
@@ -69,8 +70,8 @@ if (isset($_POST['submit'])) {
                     <img class="logo" src="asset/css/images/admin-logo.png" alt="Logo">
                 </div>
                 <form class="mt-3 text-center card p-2 mb-3" action="" method="POST" id="loginForm">
-                    <div class="text text-center text-dark">
-                        <h3>Login</h3>
+                    <div class="card-header text-center mb-3">
+                        <h3>Login Here</h3>
                     </div>
                     <?php
                     // Display error message if it is set
@@ -80,21 +81,24 @@ if (isset($_POST['submit'])) {
                     ?>
                     <div class="input-group mb-3">
                         <span class="input-group-text m-1 p-2" id="email"><i class="bi bi-envelope-at"></i></span>
-                        <input type="email" name="email" class="form-control line-input m-1 p-2" placeholder="Email" id="email" >
+                        <input type="email" name="email" class="form-control line-input m-1 p-2" placeholder="Email"
+                            id="email">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text m-1 p-2" id="username"><i class="bi bi-person-circle"></i></span>
-                        <input type="text" name="username" class="form-control line-input m-1 p-2" placeholder="Username" id="username" >
+                        <input type="text" name="username" class="form-control line-input m-1 p-2"
+                            placeholder="Username" id="username">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text m-1 p-2" id="password"><i class="bi bi-shield-lock"></i></span>
-                        <input type="password" name="password" class="form-control line-input m-1 p-2" placeholder="Password" id="password" >
+                        <input type="password" name="password" class="form-control line-input m-1 p-2"
+                            placeholder="Password" id="password">
                     </div>
                     <div class="mb-3 text-center">
-                        <button type="submit" name="submit" class="btn btn-primary text-dark col-3">Login</button>
+                        <button type="submit" name="submit" class="btn col-3">Login</button>
                     </div>
                     <div class="mb-3 text-center text-dark">
-                        <h4>Don't have an account? <a href="signup.php" class="btn text text-primary"> Signup</a></h4>
+                        <h4>Don't have an account? <a href="register.php" class="btn"> Register</a></h4>
                     </div>
                 </form>
             </div>

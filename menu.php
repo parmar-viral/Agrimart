@@ -19,23 +19,33 @@
                 <li class="nav-item">
                     <a class="nav-link" href="contact_us.php"> Contact us</a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link" href="product.php"> Products</a>
                 </li>
-               
+                <li class="nav-item">
+                    <a class="nav-link" href="orders.php"> My Orders</a>
+                </li>
                 <li class="nav-item ">
                     <a class="nav-link " href="feedback.php">Feedback</a>
                 </li>
                 <li class="nav-item toggle">
-                    <a class="nav-link  " href="addtocart.php"><i class="bi bi-cart"></i></a>
+                    <a class="nav-link  " href="cart.php"><i class="bi bi-cart"></i></a>
                 </li>
             </ul>
+            <?php if(isset($_SESSION['ROLE'])): ?>
+            <form class="d-flex">
+                <a class="nav-link text-dark" href="logout.php">Hi, <?php echo ucwords($_SESSION['USERNAME']); ?>
+                    <span class="btn text-danger"><i class="bi bi-person-circle"></i> Logout</span></a>
+            </form>
+            <?php else: ?>
             <form class="d-flex">
 
                 <a class="nav-link text-dark" href="login.php"><span class="btn text text-dark"><i
                             class="bi bi-person-circle"> Login</span></i></a>
             </form>
+            <?php endif; ?>
+
         </div>
     </div>
 </nav>

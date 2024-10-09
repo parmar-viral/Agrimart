@@ -1,13 +1,5 @@
-<?php include 'breadcrumb.php'; ?>
-<?php
+<?php include 'breadcrumb.php'; 
 session_start();
-
-// Ensure 'ROLE' is set in the session before accessing it
-if (isset($_SESSION['ROLE'])) {
-    $role = $_SESSION['ROLE'];
-} else {
-    $role = null; // Or set a default value, or handle the case when the role is not set
-}
 include 'admin/error.php';
 include_once ('admin/controller/database/db.php');
 ?>
@@ -23,14 +15,7 @@ include_once ('admin/controller/database/db.php');
 
 <body>
 
-    <?php
-    // Check the user's role and include the appropriate menu
-    if ($role == 2) {
-        include 'menu2.php';
-    } else {
-        include 'menu.php';
-    }
-    ?>
+    <?php include 'menu.php';  ?>
     <div class="container ">
         <div class="row mt-1">
             <img src="asset/css/images/intro.jpeg" alt="" height="500px" class="intro-img mt-3">
@@ -66,10 +51,7 @@ include_once ('admin/controller/database/db.php');
                     <h5>
                         <?php echo $row["created_at"]; ?>
                     </h5>
-                    <?php
-                        // Check the user's role and include the appropriate menu
-                        if ($role == 2) {
-                          ?>
+                    <?php if (isset($_SESSION['ROLE']) && $_SESSION['ROLE'] == 2) { ?>
                     <form class="text-center" method="POST" action="addtocart.php">
                         <input type="hidden" name="role" value="<?php echo $role; ?>">
                         <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
@@ -185,4 +167,5 @@ include_once ('admin/controller/database/db.php');
     }
     </script>
 </body>
+
 </html>

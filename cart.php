@@ -4,15 +4,15 @@ include 'admin/controller/database/db.php'; // Database connection
 
 // Check if user is logged in
 if (!isset($_SESSION['ID'])) {
-    header('Location: login.php');
-    exit();
+    $loggedIn = false; // User is not logged in
+} else {
+    $loggedIn = true; // User is logged in
+    $user_id = $_SESSION['ID'];
+
+    // Fetch cart items for the logged-in user
+    $sql = "SELECT * FROM cart_items WHERE user_id = '$user_id'";
+    $res = mysqli_query($conn, $sql);
 }
-
-$user_id = $_SESSION['ID'];
-
-// Fetch cart items for the logged-in user
-$sql = "SELECT * FROM cart_items WHERE user_id = '$user_id'";
-$res = mysqli_query($conn, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -21,62 +21,63 @@ $res = mysqli_query($conn, $sql);
 <head>
     <title>My Cart</title>
     <style>
-    /* Glassmorphism Style */
-    .glass {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        padding: 20px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        width: 80%;
-        margin: 20px auto;
-    }
+        /* Glassmorphism Style */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 20px auto;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    th,
-    td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-    th {
-        background-color: rgba(0, 0, 0, 0.1);
-        color: #333;
-    }
+        th {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
 
-    tr:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
 
-    h2 {
-        text-align: center;
-        color: #333;
-    }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-    .btn {
-        padding: 5px 10px;
-        border: none;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
-    }
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-    .btn:hover {
-        background-color: #45a049;
-    }
+        .btn:hover {
+            background-color: #45a049;
+        }
     </style>
     <?php include 'css.php'; ?>
 </head>
 
 <body>
-    <?php include 'menu2.php'; ?>
+    <?php include 'menu.php'; ?>
+
     <div class="row d-flex justify-content-center mt-3 mb-3">
         <div class="row">
             <div class="col-md-6 offset-md-3">
@@ -86,48 +87,54 @@ $res = mysqli_query($conn, $sql);
                     </div>
 
                     <div class="card-body text text-dark">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-    if (mysqli_num_rows($res) > 0) {
-        while ($row = mysqli_fetch_assoc($res)) {
-            echo '<tr>';
-            echo '<td>' . $row['product_name'] . '</td>';
-            echo '<td>$' . $row['product_price'] . '</td>';
-            echo '<td>' . $row['quantity'] . '</td>';
-            echo '<td>$' . $row['total_price'] . '</td>';
-            echo '<td>
-                <div class="btn-group">
-                    <!-- Buy Form -->
-                    <form method="post" action="buy.php">
-                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
-                        <button type="submit" class="btn">Buy</button>
-                    </form>
+                        <?php if (!$loggedIn): ?>
+                            <div class='alert alert-danger text-center'>
+                                You must be logged in to view your cart items. <a href="login.php">Log in here</a>
+                            </div>
+                        <?php else: ?>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if (mysqli_num_rows($res) > 0) {
+                                        while ($row = mysqli_fetch_assoc($res)) {
+                                            echo '<tr>';
+                                            echo '<td>' . $row['product_name'] . '</td>';
+                                            echo '<td>$' . $row['product_price'] . '</td>';
+                                            echo '<td>' . $row['quantity'] . '</td>';
+                                            echo '<td>$' . $row['total_price'] . '</td>';
+                                            echo '<td>
+                                                <div class="btn-group">
+                                                    <!-- Buy Form -->
+                                                    <form method="post" action="buy.php">
+                                                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                                                        <button type="submit" class="btn">Buy</button>
+                                                    </form>
 
-                    <!-- Delete Form -->
-                    <form method="post" action="">
-                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
-                        <button type="submit" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
-                    </form>
-                </div>
-            </td>';
-            echo '</tr>';
-        }
-    } else {
-        echo '<tr><td colspan="5">Your cart is empty.</td></tr>';
-    }
-    ?>
-                            </tbody>
-                        </table>
+                                                    <!-- Delete Form -->
+                                                    <form method="post" action="">
+                                                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                                                        <button type="submit" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </td>';
+                                            echo '</tr>';
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="5">Your cart is empty.</td></tr>';
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

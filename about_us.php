@@ -1,19 +1,11 @@
 <?php
-
 session_start();
-
-// Ensure 'ROLE' is set in the session before accessing it
-if (isset($_SESSION['ROLE'])) {
-    $role = $_SESSION['ROLE'];
-} else {
-    $role = null; // Or set a default value, or handle the case when the role is not set
-}
-
 // Include other necessary files and handle other logic
 include 'admin/error.php';
 include_once('admin/controller/database/db.php');
 include 'breadcrumb.php';
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,20 +17,12 @@ include 'breadcrumb.php';
 </head>
 
 <body>
-
-<?php
-        // Check the user's role and include the appropriate menu
-        if ($role == 2) {
-            include 'menu2.php';
-        } else {
-            include 'menu.php';
-        }
-    ?>
+    <?php include 'menu.php';  ?>
     <div class="row  d-flex  justify-content-center  mt-3 mb-3">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card mb-2">
-   
+
 
                     <div class="card-header text text-dark text-center">
                         <h3>About Us</h3>
@@ -49,13 +33,14 @@ include 'breadcrumb.php';
                         <p>Our mission is to support farmers and deliver high-quality products to our customers.</p>
                         <p>With years of experience in the industry, we strive to offer a wide range of products that
                             meet the needs of our diverse clientele.</p>
-                        <p>Thank you for choosing us. We look forward to serving you!<a href="details.php">Read More..</a></p>
+                        <p>Thank you for choosing us. We look forward to serving you!<a href="details.php">Read
+                                More..</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-   
+
     <?php include 'footer.php';?>
     <?php include 'js.php';  ?>
 </body>

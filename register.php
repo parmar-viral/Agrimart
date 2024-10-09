@@ -65,10 +65,10 @@ include 'admin/controller/user_controller.php';
                         </div>
                         <input type="hidden" name="role" value="2">
                         <div class="mb-3 text-center">
-                            <button type="submit" name="submit" class="btn col-3">Sign Up</button>
+                            <button type="submit" name="submit" class="btn col-3">Register</button>
                         </div>
                         <div class="mb-3 text-center text-black">
-                            <h4>Already have an account? <a href="login.php" class="text-primary col-2 btn">Login</a></h4>
+                            <h4>Already have an account? <a href="login.php" class="col-2 btn">Login</a></h4>
                         </div>
                     </form>
                 </div>

@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 </head>
 
 <body>
-    <?php include 'menu2.php';?>
+    <?php include 'menu.php';?>
 
     <div class="container">
         <div class="glass-table-container"> <!-- This container wraps the table for glass effect -->

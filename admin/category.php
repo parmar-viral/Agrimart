@@ -135,6 +135,7 @@ if ($_SESSION['ROLE'] == 0) {
     }
     </script>
 </body>
+
 </html>
 <?php } else {
     include 'logout.php';

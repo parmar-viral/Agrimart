@@ -1,4 +1,7 @@
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 class products
     {
         public $db;  // Declare the property
@@ -46,7 +49,7 @@ class products
         $file=$_FILES['product_image']['name'];
 	    $tname=$_FILES['product_image']['tmp_name'];
 
-        $folder="../asset/image/".$file;
+        $folder="../asset/css/image/".$file;
 	    move_uploaded_file($tname,$folder);
 
         $product_category=$_POST['product_category'];
@@ -71,7 +74,7 @@ class products
         if (!empty($_FILES['product_image']['name'])) {
             $file = $_FILES['product_image']['name'];
             $tname = $_FILES['product_image']['tmp_name'];
-            $folder = "./asset/image/" . $file;
+            $folder = "../asset/css/image/" . $file;
             move_uploaded_file($tname, $folder);
         } else {
             // Use the current image if no new image is uploaded

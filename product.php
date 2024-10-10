@@ -59,7 +59,7 @@ $product_res = mysqli_query($conn, $product_sql);
                     <div class="col-lg-4 col-md-6 col-sm-12 products-grid">
                         <div class="card m-1 text-left p-1 ms-2 mb-3">
                             <p class="text-center mt-2">
-                                <img src="admin/<?php echo $row['product_image'] ?>" height="160px" width="150px"
+                                <img src="admin/<?php echo $row['product_image'] ?>" height="150px" width="150px"
                                     alt="">
                             </p>
                             <h5><?php echo $row["product_name"]; ?></h5>

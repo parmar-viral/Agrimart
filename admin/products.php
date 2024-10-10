@@ -107,7 +107,7 @@ if (0 == $_SESSION['ROLE']) {
                     ?>
                     <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
                         <div class="glass-card text-center p-3">
-                            <img src="<?php echo $row['product_image']; ?>" height="150px"
+                            <img src="admin/<?php echo $row['product_image']; ?>" height="150px"
                                 width="150px" class="products mb-3">
                             <p class="text-light"><?php echo htmlspecialchars($row['product_name']); ?></p>
                             <p class="text-light">$<?php echo number_format($row['product_price'], 2); ?></p>

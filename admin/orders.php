@@ -1,18 +1,17 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 include 'controller/database/db.php'; // Assuming database connection
+include 'controller/order_controller.php';
 
 // Ensure admin login check
 if (!isset($_SESSION['ID'])) {
     header('Location: login.php');
     exit();
 }
-
-// Fetch all orders
-$sql = "SELECT orders.id, orders.user_id, users.username, orders.product_id, orders.quantity, orders.total_price, orders.order_date 
-        FROM orders 
-        JOIN users ON orders.user_id = users.id";
-$result = mysqli_query($conn, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +19,7 @@ $result = mysqli_query($conn, $sql);
 
 <head>
     <title>Admin - View Orders</title>
-    <?php include 'css.php';?>
+    <?php include 'css.php'; ?>
 </head>
 
 <body>
@@ -40,29 +39,38 @@ $result = mysqli_query($conn, $sql);
                                         <tr>
                                             <th class="col">Order ID</th>
                                             <th class="col">User</th>
-                                            <th class="col">Product ID</th>
+                                            <th class="col">Product Name</th>
                                             <th class="col">Quantity</th>
                                             <th class="col">Total Price</th>
                                             <th class="col">Order Date</th>
+                                            <th class="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                    if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr>
-                                    <td scope='row'>{$row['id']}</td>
-                                    <td>{$row['username']}</td>
-                                    <td>{$row['product_id']}</td>
-                                    <td>{$row['quantity']}</td>
-                                    <td>{$row['total_price']}</td>
-                                    <td>{$row['order_date']}</td>
-                                  </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='6' class='text-center'>No orders found.</td></tr>";
-                    }
-                    ?>
+                                          $result = $obj->view();
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<tr>
+                                                        <td scope='row'>{$row['id']}</td>
+                                                        <td>{$row['username']}</td>
+                                                        <td>{$row['product_name']}</td>
+                                                        <td>{$row['quantity']}</td>
+                                                        <td>{$row['total_price']}</td>
+                                                        <td>{$row['order_date']}</td>
+                                                        <td>
+                                                            <form action='#' method='POST'>
+                                                                <input type='hidden' value='{$row['id']}' name='order_id'>
+                                                                <button type='button' class='btn btn-warning btn-sm' data-bs-toggle='modal' data-bs-target='#updateOrderModal' onclick='editOrder({$row['id']}, {$row['quantity']}, {$row['total_price']}, {$row['product_price']})'><i class='bi bi-pencil-square'></i></button>
+                                                                <button class='btn btn-danger btn-sm' type='submit' name='delete' onclick='return confirm(\"Are you sure to delete?\")'><i class='bi bi-trash3'></i></button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>";
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='7' class='text-center'>No orders found.</td></tr>";
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -73,7 +81,52 @@ $result = mysqli_query($conn, $sql);
             </div>
         </div>
     </div>
-    <?php include 'js.php';?>
+
+    <!-- Update Order Modal -->
+    <div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content glass-card">
+                <div class="modal-header">
+                    <h5 class="modal-title text-light" id="updateOrderModalLabel">Update Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="updateOrderForm" action="" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" id="update_order_id" name="order_id">
+                        <div class="mb-3">
+                            <label for="update_quantity" class="form-label text-light">Quantity</label>
+                            <input type="number" class="form-control" id="update_quantity" name="quantity" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="update_total_price" class="form-label text-light">Total Price</label>
+                            <input type="number" class="form-control" id="update_total_price" name="total_price" required readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="update" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <?php include 'js.php'; ?>
+    <script>
+        function editOrder(orderId, quantity, totalPrice, productPrice) {
+            document.getElementById('update_order_id').value = orderId;
+            document.getElementById('update_quantity').value = quantity;
+            document.getElementById('update_total_price').value = totalPrice; // Initially set total price
+            // Update total price when quantity changes
+            document.getElementById('update_quantity').setAttribute('data-product-price', productPrice);
+            document.getElementById('update_quantity').addEventListener('input', function () {
+                const qty = this.value;
+                const price = this.getAttribute('data-product-price');
+                const newTotalPrice = qty * price; // Calculate new total price
+                document.getElementById('update_total_price').value = newTotalPrice.toFixed(2); // Set new total price in the input field
+            });
+        }
+    </script>
 </body>
 
 </html>

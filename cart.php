@@ -21,56 +21,43 @@ if (!isset($_SESSION['ID'])) {
 <head>
     <title>My Cart</title>
     <style>
-        /* Glassmorphism Style */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 20px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            margin: 20px auto;
-        }
+    /* Glassmorphism Style */
+    .glass {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        margin: 20px auto;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
 
-        th {
-            background-color: rgba(0, 0, 0, 0.1);
-            color: #333;
-        }
+    th {
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #333;
+    }
 
-        tr:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
+    tr:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
 
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
+    h2 {
+        text-align: center;
+        color: #333;
+    }
     </style>
     <?php include 'css.php'; ?>
 </head>
@@ -88,22 +75,22 @@ if (!isset($_SESSION['ID'])) {
 
                     <div class="card-body text text-dark">
                         <?php if (!$loggedIn): ?>
-                            <div class='alert alert-danger text-center'>
-                                You must be logged in to view your cart items. <a href="login.php">Log in here</a>
-                            </div>
+                        <div class='alert alert-danger text-center'>
+                            You must be logged in to view your cart items. <a href="login.php">Log in here</a>
+                        </div>
                         <?php else: ?>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
                                     if (mysqli_num_rows($res) > 0) {
                                         while ($row = mysqli_fetch_assoc($res)) {
                                             echo '<tr>';
@@ -132,8 +119,8 @@ if (!isset($_SESSION['ID'])) {
                                         echo '<tr><td colspan="5">Your cart is empty.</td></tr>';
                                     }
                                     ?>
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
                         <?php endif; ?>
                     </div>
                 </div>

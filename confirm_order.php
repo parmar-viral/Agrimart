@@ -16,7 +16,7 @@ if (!isset($_SESSION['ID'])) {
 </head>
 
 <body>
-    <?php include 'menu2.php';?>
+    <?php include 'menu.php';?>
 
     <div class="row d-flex justify-content-center mt-3 mb-3">
         <div class="row">

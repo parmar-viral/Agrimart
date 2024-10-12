@@ -1,17 +1,19 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+include 'error.php';
 session_start();
-include 'controller/database/db.php'; // Assuming database connection
-include 'controller/order_controller.php';
-
-// Ensure admin login check
 if (!isset($_SESSION['ID'])) {
     header('Location: login.php');
     exit();
 }
+// Check for a success message in session
+$msg = null;
+if (isset($_SESSION['msg'])) {
+    $msg = $_SESSION['msg'];
+    unset($_SESSION['msg']); // Clear the message from the session after it's been displayed
+    echo $msg;
+}
+if ($_SESSION['ROLE'] == 0) {
+    include_once('controller/order_controller.php');
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +31,11 @@ if (!isset($_SESSION['ID'])) {
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-lg-12">
-
+                    <?php if ($msg) { ?>
+                        <div class="alert alert-info text-center">
+                            <?php echo $msg; ?>
+                        </div>
+                        <?php } ?>
                         <!-- Display All orders -->
                         <div class="glass-card">
                             <h2 class="text-center text-light mb-3">All Orders</h2>
@@ -130,3 +136,7 @@ if (!isset($_SESSION['ID'])) {
 </body>
 
 </html>
+<?php } else {
+    include 'logout.php';
+}
+?>

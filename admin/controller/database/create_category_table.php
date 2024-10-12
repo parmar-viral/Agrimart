@@ -15,6 +15,7 @@ if (!$conn) {
 $sql="CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL,
+    product_image VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
 if(mysqli_query($conn, $sql)) {
@@ -22,22 +23,6 @@ if(mysqli_query($conn, $sql)) {
 } else {
     echo "Error creating table: " . mysqli_error($conn);
 }
-
-
-//sql to create feedback table
-$sql = "CREATE TABLE feedback (
-        name VARCHAR(255)NOT NULL,
-        email VARCHAR(255)NOT NULL,
-        message VARCHAR(255)NOT NULL
-        
-    )";
-if (mysqli_query($conn, $sql)) {
-    echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-
-
 mysqli_close($conn);
 
 ?>

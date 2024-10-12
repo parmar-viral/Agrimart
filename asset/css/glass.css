@@ -189,46 +189,66 @@ input{
 }
 /* glass style for category sidebar---------------------------------- */
 
-.sidebar {
-    height: 100vh; /* Make sidebar full height */
-    padding: 20px; /* Add padding */
-    background: rgba(255, 255, 255, 0.2); /* Light translucent background */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-    border-radius: 15px; /* Rounded corners */
-    backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
-    -webkit-backdrop-filter: blur(10px); /* Blur effect for WebKit browsers */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+.category-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.sidebar h4 {
-    color: #333; /* Adjust text color for contrast */
+.category-item {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.sidebar ul {
-    list-style-type: none; /* Remove bullet points */
-    padding: 0;
+.category-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
 }
 
-.sidebar ul li {
-    margin-bottom: 15px; /* Add spacing between items */
+.category-item:hover img {
+    opacity: 0.5;
 }
 
-.sidebar ul li a {
-    color: #444; /* Adjust link color */
-    text-decoration: none;
-    transition: color 0.3s; /* Smooth color transition */
+.category-item span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.sidebar ul li a:hover {
-    color: #007bff; /* Change link color on hover */
-    text-decoration: underline;
+.category-item:hover span {
+    opacity: 1;
 }
 
-@media (max-width: 768px) {
-    .sidebar {
-        position: relative; /* Adjust position for smaller screens */
-        height: auto; /* Auto height for responsiveness */
-        border-right: none; /* Remove border on smaller screens */
-    }
+/* Product card styles */
+/* .card {
+    background: rgba(150, 151, 226, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(233, 224, 224, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(15, 15, 15, 0.18);
+    color: black;
 }
+
+.card:hover {
+    box-shadow: 0 4px 30px rgba(52, 54, 91, 0.563);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 2px solid rgba(243, 239, 239, 0.4);
+} */
 

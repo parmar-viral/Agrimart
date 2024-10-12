@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $product_id = $_POST['product_id'];
     $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
-    $quantity = 1; // Default quantity for now, you can adjust this
+    $quantity = 1; // Default quantity for now
 
     // Check if the product is already in the cart
     $check_sql = "SELECT * FROM cart_items WHERE user_id = '$user_id' AND product_id = '$product_id'";
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_query($conn, $insert_sql);
     }
 
+    $_SESSION['msg'] = "Product added to cart successfully!"; // Success message
     header('Location: cart.php'); // Redirect to the cart page
     exit();
 }
-?>

@@ -14,12 +14,11 @@ if (!isset($_SESSION['ID'])) {
 if (0 == $_SESSION['ROLE']) {
     include 'controller/product_controller.php';
 
-    // Check for a success message in session
+    // Check for a success or error message in session
     $msg = null;
     if (isset($_SESSION['msg'])) {
         $msg = $_SESSION['msg'];
         unset($_SESSION['msg']); // Clear the message from the session after it's been displayed
-        echo $msg;
     }
 ?>
 
@@ -43,6 +42,12 @@ if (0 == $_SESSION['ROLE']) {
                 <!-- Add Products Section with Glass Effect -->
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
+                        <?php if ($msg) { ?>
+                        <!-- Display message after any action (insert, update, delete) -->
+                        <div class="alert alert-info text-center">
+                            <?php echo $msg; ?>
+                        </div>
+                        <?php } ?>
                         <div class="glass-card">
                             <h2 class="text-center text-light mb-3">Add Products</h2>
                             <div class="glass-form">
@@ -106,26 +111,34 @@ if (0 == $_SESSION['ROLE']) {
                     while ($row = mysqli_fetch_assoc($data)) {
                     ?>
                     <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
-                        <div class="glass-card text-center p-3">
-                            <img src="admin/<?php echo $row['product_image']; ?>" height="150px"
-                                width="150px" class="products mb-3">
+                        <div class="glass-card p-3">
+                            <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top mb-3"
+                                alt="Product Image" style="height: 220px; object-fit: cover; width: 100%; border-radius:5px">
+
                             <p class="text-light"><?php echo htmlspecialchars($row['product_name']); ?></p>
                             <p class="text-light">$<?php echo number_format($row['product_price'], 2); ?></p>
                             <p class="text-light"><?php echo htmlspecialchars($row['created_at']); ?></p>
-                            <form action="#" method="POST">
-                                <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-                                <button type="button" class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#updateProductModal"
-                                    onclick='setProductData(<?php echo json_encode($row); ?>)'>
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button type="submit" class="btn btn-danger btn-sm" name="delete"
-                                    onclick="return confirm('Are you sure you want to delete?')">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </form>
+
+                            <!-- Centered update and delete buttons -->
+                            <div class="d-flex justify-content-center">
+                                <form action="#" method="POST">
+                                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
+
+                                    <button type="button" class="btn btn-warning btn-sm me-2" data-bs-toggle="modal"
+                                        data-bs-target="#updateProductModal"
+                                        onclick='setProductData(<?php echo json_encode($row); ?>)'>
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+
+                                    <button type="submit" class="btn btn-danger btn-sm" name="delete"
+                                        onclick="return confirm('Are you sure you want to delete?')">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
+
                     <?php } ?>
                 </div>
             </div>
@@ -164,12 +177,9 @@ if (0 == $_SESSION['ROLE']) {
                                 <input type="text" class="form-control" id="product_category" name="product_category"
                                     required>
                             </div>
-
-                            <!-- Image Section -->
                             <div class="mb-3">
                                 <label for="product_image" class="form-label text-light">Product Image</label>
-                                <img id="current_image" src="" alt="Product Image" class="img-thumbnail mb-2"
-                                    style="max-height: 150px; display: none;">
+                                <img id="current_image" src="" alt="Product Image" class="img-thumbnail mb-2">
                                 <input type="file" class="form-control" id="product_image" name="product_image">
                             </div>
                         </div>

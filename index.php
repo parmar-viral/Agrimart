@@ -1,7 +1,7 @@
 <?php include 'breadcrumb.php'; 
 session_start();
 include 'admin/error.php';
-include_once ('admin/controller/database/db.php');
+include_once ('admin/controller/product_controller.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,28 +29,21 @@ include_once ('admin/controller/database/db.php');
         <div class="row mt-1">
 
             <?php
-            $sql = "SELECT * FROM products LIMIT 3";
-            $res = mysqli_query($conn, $sql);
-
+            $res=$obj->view();
             while ($row = mysqli_fetch_assoc($res)) {
                 ?>
             <div class="col-lg-4 col-md-4 col-sm-12 ">
                 <div class="card m-1 text-left p-1 ms-2 mb-3">
                     <p class="text-center mt-2">
-                        <img src="admin/<?php echo $row['product_image'] ?>" height="160px" width="150px" alt=""
-                            srcset="">
+                        <img src="admin/<?php echo htmlspecialchars($row['product_image']); ?>"
+                            class="card-img-top mb-3" alt="Product Image"
+                            style="height: 220px; object-fit: cover; width: 100%; border-radius:5px">
                     </p>
-                    <h5>
-                        <?php echo $row["product_name"]; ?>
-                    </h5>
 
-                    <h5>
-                        <?php echo '$' . $row["product_price"]; ?>
-                    </h5>
+                    <h5><?php echo htmlspecialchars($row['product_name']); ?></h5>
+                    <h5>$<?php echo number_format($row['product_price'], 2); ?></h5>
+                    <h5><?php echo htmlspecialchars($row['created_at']); ?></h5>
 
-                    <h5>
-                        <?php echo $row["created_at"]; ?>
-                    </h5>
                     <?php if (isset($_SESSION['ROLE']) && $_SESSION['ROLE'] == 2) { ?>
                     <form class="text-center" method="POST" action="addtocart.php">
                         <input type="hidden" name="role" value="<?php echo $role; ?>">
@@ -59,12 +52,10 @@ include_once ('admin/controller/database/db.php');
                         <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>">
                         <button class="btn m-3" type="submit" name="addtocart">Add-to-Cart</button>
                         <button type="button" value="<?php echo $row['product_id'] ?>" class="btn btn-info"
-                            data-bs-target="#display-<?php echo $row['product_id'] ?>" data-bs-toggle="modal">Details
-                        </button>
+                            data-bs-target="#display-<?php echo $row['product_id'] ?>"
+                            data-bs-toggle="modal">Details</button>
                     </form>
-                    <?php
-                        } else {                           
-                    ?>
+                    <?php } else { ?>
                     <form class="text-center" method="POST" action="login.php">
                         <input type="hidden" name="role" value="<?php echo $role; ?>">
                         <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
@@ -72,13 +63,13 @@ include_once ('admin/controller/database/db.php');
                         <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>">
                         <button class="btn m-3" type="submit" name="addtocart">Add-to-Cart</button>
                         <button type="button" value="<?php echo $row['product_id'] ?>" class="btn btn-info"
-                            data-bs-target="#display-<?php echo $row['product_id'] ?>" data-bs-toggle="modal">Details
-                        </button>
+                            data-bs-target="#display-<?php echo $row['product_id'] ?>"
+                            data-bs-toggle="modal">Details</button>
                     </form>
-
                     <?php } ?>
                 </div>
             </div>
+
 
             <div class="modal fade" id="display-<?php echo $row['product_id'] ?>" tabindex="-1"
                 aria-labelledby="fordisplaymodal" aria-hidden="true">

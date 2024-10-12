@@ -1,5 +1,5 @@
 <?php 
-class products
+class cart
     {
         public $db;  // Declare the property
 
@@ -10,74 +10,45 @@ class products
                 echo 'failed to connect'.mysqli_connect_error();
             }
         }
-        function insert($product_name,$product_description,$product_price,$folder,$product_category)
+        function insert()
         {
-            $sql  = "INSERT INTO `products` (`product_name`, `description`, `product_price`,`product_image`,`category`) VALUES ('$product_name','$product_description','$product_price','$folder','$product_category')";       
+            $sql  = "";       
             $res=mysqli_query($this->db,$sql);
             return $res;
         }
-        /*
-        function update()
-        {
-            $sql = "UPDATE `products` SET `product`='$product' WHERE `product_id`='$'";
-            $res = mysqli_query($this->db, $sql);
-            return $res;
-        }*/
         function delete($product_id)
         {
-            $sql = "DELETE FROM `products` WHERE `product_id`='$product_id'";
+            $sql = "DELETE FROM `cart_items` WHERE `product_id`='$product_id'";
             $res = mysqli_query($this->db, $sql);
             return $res;
         }
-        function view()
+        function view($user_id)
         {
-                
-            $sql = "SELECT * FROM `products`";
-            $res = mysqli_query($this->db,$sql);
+               $sql = "SELECT * FROM cart_items WHERE `user_id` = '$user_id'";
+            $res = mysqli_query($this->db, $sql);
             return $res;
         }
     }
-    $obj = new products();
+    $obj = new cart();
     if (isset($_POST['submit'])) {
-        $product_name=$_POST['product_name'];
-        $product_description=$_POST['product_description'];
-        $product_price=$_POST['product_price'];
-
-        $file=$_FILES['product_image']['name'];
-	    $tname=$_FILES['product_image']['tmp_name'];
-
-        $folder="./asset/image/".$file;
-	    move_uploaded_file($tname,$folder);
-
-        $product_category=$_POST['product_category'];
-        $result=$obj->insert($product_name,$product_description,$product_price,$folder,$product_category);
+       
+        $result=$obj->insert();
         
         if ($result==true) {
-          header("Location:product.php");
-          die();
+          header("Location:cart.php");
         }else{
-          $errorMsg  = "You are not Registred..Please Try again";
-          echo $errorMsg;
+          
         }   
-    }/*
-    if (isset($_POST['update'])) {
-        $id = $_POST['course_id'];
-        $course = $_POST['course'];
-    
-        $res = $obj->update($id, $course);
-        if ($res) {
-            header("location:courses.php");
-        } else {
-            echo "alert('data not updated successfully')";
-        }
-    } 
-    else*/if (isset($_POST['delete'])) {
-        $product_id=$_POST['product_id'];
+    }
+    elseif (isset($_POST['delete'])) {
+        $product_id=$_POST['item_id'];
         $res = $obj->delete($product_id);
         if ($res) {
-            header("location:product.php");
+            $_SESSION['msg'] = "product deleted from cart deleted successfully.";
+            header("location:cart.php");
+            exit();
         } else {
-            echo "not deleted";
+            $_SESSION['msg'] = "Failed to delete product.";
         }
     }
 ?>

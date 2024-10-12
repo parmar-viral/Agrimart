@@ -10,23 +10,25 @@ class order
                 echo 'failed to connect'.mysqli_connect_error();
             }
         }
-        function insert($product_name,$product_description,$product_price,$folder,$product_category)
+        function insert()
         {
-            $sql  = "INSERT INTO `products` (`product_name`, `description`, `product_price`,`product_image`,`category`) VALUES ('$product_name','$product_description','$product_price','$folder','$product_category')";       
+            $sql  = "";       
             $res=mysqli_query($this->db,$sql);
             return $res;
         }
-        /*
-        function update()
+    
+        function update($order_id,$quantity,$total_price)
         {
-            $sql = "UPDATE `products` SET `product`='$product' WHERE `product_id`='$'";
-            $res = mysqli_query($this->db, $sql);
+            
+            // Update the order in the database
+            $sql = "UPDATE orders SET `quantity` = '$quantity', `total_price` ='$total_price' WHERE `id` = '$order_id'";
+            $res=mysqli_query($this->db,$sql);
             return $res;
-        }*/
-        function delete($product_id)
+        }
+        function delete($order_id)
         {
-            $sql = "DELETE FROM `products` WHERE `product_id`='$product_id'";
-            $res = mysqli_query($this->db, $sql);
+            $sql="DELETE FROM orders WHERE `id`='$order_id'";
+            $res=mysqli_query($this->db,$sql);
             return $res;
         }
         function view()
@@ -43,29 +45,28 @@ class order
         }
     }
     $obj = new order();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['submit'])) {
         
-        $result=$obj->insert();
+        $res=$obj->insert();
         
-        if ($result==true) {
+        if ($res==true) {
+            $_SESSION['msg']="";
           header("Location:orders.php");
           die();
         }else{
-          $errorMsg  = "You are not Registred..Please Try again";
-          echo $errorMsg;
+            $_SESSION['msg']="";
         }   
     }elseif (isset($_POST['update'])) {
     $order_id = $_POST['order_id'];
     $quantity = $_POST['quantity'];
     $total_price = $_POST['total_price'];
 
-    // Update the order in the database
-    $update_sql = "UPDATE orders SET `quantity` = '$quantity', `total_price` ='$total_price' WHERE `id` = '$order_id'";
-    $res=mysqli_query($conn,$sql);
+    $result=$obj->update($order_id,$quantity,$total_price);
     if ($res) {
-        echo "orders updated successfully";
+        $_SESSION['msg']="orders updated successfully";
     }else{
-        echo "orders not updated";
+         $_SESSION['msg']="failed to update order";
     }    
     // Redirect or show a success message
     header('Location: orders.php'); // Redirect back to the orders page
@@ -73,15 +74,14 @@ class order
 
 }elseif(isset($_POST['delete'])){
     $order_id=$_POST['order_id'];
-    $sql="DELETE FROM orders WHERE `id`='$order_id'";
-    $res=mysqli_query($conn,$sql);
+    $res=$obj->delete($order_id);  
     if ($res) {
-        echo "orders deleted successfully";
+        $_SESSION['msg']="orders deleted successfully";
     }else{
-        echo "orders not deleted";
+        $_SESSION['msg']="failed to delete order";
     }
-    // Redirect or show a success message
-    header('Location: orders.php'); // Redirect back to the orders page
+    header('Location: orders.php');
     exit();
 }
+    }
 ?>

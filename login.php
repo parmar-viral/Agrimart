@@ -2,51 +2,12 @@
 include 'admin/error.php';
 session_start();
 include_once('admin/controller/database/db.php');
-
-$errorMsg = "";
-
-if (isset($_POST['submit'])) {
-    $email = $conn->real_escape_string($_POST['email']);
-    $username = $conn->real_escape_string($_POST['username']);
-    $password = $conn->real_escape_string(md5($_POST['password']));
-
-    if (!empty($username) && !empty($password) && !empty($email)) {
-        // Query to check if the user exists with the provided email, username, and password
-        $sql = "SELECT * FROM users WHERE email='$email' AND username='$username' AND pass='$password'";
-        $result = mysqli_query($conn, $sql);
-        
-        // Check if any rows are returned
-        if ($result->num_rows > 0) {
-            // Fetch user data
-            $row = $result->fetch_assoc();
-            // Set session variables
-            $_SESSION['ID'] = $row['id'];
-            $_SESSION['ROLE'] = $row['user_role'];
-            $_SESSION['USERNAME'] = $row['username'];
-            $_SESSION['EMAIL'] = $row['email'];
-            
-            // Redirect based on user role
-            if ($row['user_role'] == 0 || $row['user_role'] == 1) {
-                header("Location:admin/index.php");
-            } elseif ($row['user_role'] == 2) {
-                header("Location:index.php");
-                exit();
-            }
-            die();
-        } else {
-            // If no user found, set error message
-            $errorMsg = "Invalid email, username, or password.";
-        }
-    } else if(empty($username) && !empty($password) && !empty($email)){
-        $errorMsg = "Username is required.";
-    }
-    else if(!empty($username) && empty($password) && !empty($email)){
-        $errorMsg = "Password is required.";
-    }
-    else if(!empty($username) && !empty($password) && empty($email)){
-        // If any field is empty, set error message
-        $errorMsg = "Email is required.";
-    }
+include_once('admin/controller/user_controller.php');
+// Check for a success or error message in session
+$msg = null;
+if (isset($_SESSION['msg'])) {
+    $msg = $_SESSION['msg'];
+    unset($_SESSION['msg']); // Clear the message from the session after it's been displayed
 }
 ?>
 <!DOCTYPE html>
@@ -65,6 +26,11 @@ if (isset($_POST['submit'])) {
     <?php include 'menu.php';?>
     <div class="container-fluid">
         <div class="row d-flex justify-content-center mt-3">
+            <?php if ($msg) { ?>
+            <div class="alert alert-info text-center">
+                <?php echo $msg; ?>
+            </div>
+            <?php } ?>
             <div class="col-md-4 col-sm-12">
                 <div class="d-flex justify-content-center mt-3">
                     <img class="logo" src="asset/css/images/admin-logo.png" alt="Logo">
@@ -73,12 +39,6 @@ if (isset($_POST['submit'])) {
                     <div class="card-header text-center mb-3">
                         <h3>Login Here</h3>
                     </div>
-                    <?php
-                    // Display error message if it is set
-                    if (!empty($errorMsg)) {
-                        echo "<div class='alert alert-danger' role='alert'>$errorMsg</div>";
-                    }
-                    ?>
                     <div class="input-group mb-3">
                         <span class="input-group-text m-1 p-2" id="email"><i class="bi bi-envelope-at"></i></span>
                         <input type="email" name="email" class="form-control line-input m-1 p-2" placeholder="Email"
@@ -95,7 +55,7 @@ if (isset($_POST['submit'])) {
                             placeholder="Password" id="password">
                     </div>
                     <div class="mb-3 text-center">
-                        <button type="submit" name="submit" class="btn col-3">Login</button>
+                        <button type="submit" name="login" class="btn col-3">Login</button>
                     </div>
                     <div class="mb-3 text-center text-dark">
                         <h4>Don't have an account? <a href="register.php" class="btn"> Register</a></h4>

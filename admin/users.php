@@ -1,26 +1,21 @@
 <?php
 include 'error.php';
 session_start();
-// Include database connection file
-include_once('controller/database/db.php');
 
 // Check user session
 if (!isset($_SESSION['ID'])) {
     include 'logout.php';
     exit();
 }
-
-// If user role is admin (assuming 0 is for users and 1 is for admin)
+// Check for a success message in session
+$msg = null;
+if (isset($_SESSION['msg'])) {
+    $msg = $_SESSION['msg'];
+    echo $msg;
+    unset($_SESSION['msg']); // Clear the message from the session after it's been displayed
+}
 if (0 == $_SESSION['ROLE']) {
-    include 'controller/user_controller.php';
-
-    // Check for a success message in session
-    $msg = null;
-    if (isset($_SESSION['msg'])) {
-        $msg = $_SESSION['msg'];
-        echo $msg;
-        unset($_SESSION['msg']); // Clear the message from the session after it's been displayed
-    }
+include_once('controller/user_controller.php');
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +38,11 @@ if (0 == $_SESSION['ROLE']) {
                 <!-- Add Users Section with Glass Effect -->
                 <div class="row justify-content-center mb-4">
                     <div class="col-lg-8">
+                        <?php if ($msg) { ?>
+                        <div class="alert alert-info text-center">
+                            <?php echo $msg; ?>
+                        </div>
+                        <?php } ?>
                         <div class="glass-card">
                             <h2 class="text-center text-light mb-3">Add Users</h2>
                             <div class="glass-form">
@@ -52,33 +52,33 @@ if (0 == $_SESSION['ROLE']) {
                                                 class="bi bi-person-circle"></i></span>
                                         <input type="text" name="fname" id="fname" class="m-1 p-2 form-control"
                                             placeholder="First Name" required>
-                                            <span id="fnameError" class="error"></span>
+                                        <span id="fnameError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i
                                                 class="bi bi-person-circle"></i></span>
                                         <input type="text" name="lname" id="lname" class="m-1 p-2 form-control"
                                             placeholder="Last Name" required>
-                                            <span id="lnameError" class="error"></span>
+                                        <span id="lnameError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i class="bi bi-envelope-at"></i></span>
                                         <input type="email" name="email" id="email" class="m-1 p-2 form-control"
                                             placeholder="Email" required>
-                                            <span id="emailError" class="error"></span>
+                                        <span id="emailError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i
                                                 class="bi bi-person-circle"></i></span>
                                         <input type="text" name="username" id="username" class="m-1 p-2 form-control"
                                             placeholder="Username" required>
-                                            <span id="usernameError" class="error"></span>
+                                        <span id="usernameError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i class="bi bi-shield-lock"></i></span>
                                         <input type="password" name="password" id="password"
                                             class="m-1 p-2 form-control" placeholder="Password" required minlength="6">
-                                            <span id="passwordError" class="error"></span>
+                                        <span id="passwordError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2" id="confirmpassword"><i
@@ -92,7 +92,7 @@ if (0 == $_SESSION['ROLE']) {
                                                 class="bi bi-telephone-fill"></i></span>
                                         <input type="tel" name="mobile" id="mobile" class="m-1 p-2 form-control"
                                             placeholder="Mobile No" required>
-                                            <span id="mobileError" class="error"></span>
+                                        <span id="mobileError" class="error"></span>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text m-1 p-2"><i class="bi bi-house"></i></span>
@@ -101,7 +101,7 @@ if (0 == $_SESSION['ROLE']) {
                                     </div>
                                     <input type="hidden" name="role" value="2">
                                     <div class="text-center">
-                                        <button type="submit" name="submit" class="btn btn-success col-4">Add
+                                        <button type="submit" name="add_user" class="btn btn-success col-4">Add
                                             User</button>
                                     </div>
                                 </form>
@@ -115,9 +115,6 @@ if (0 == $_SESSION['ROLE']) {
                     <div class="col-lg-12">
                         <div class="glass-card">
                             <h2 class="text-center text-light mb-3">Users Data</h2>
-                            <?php if ($msg) { ?>
-                            <div class="alert alert-success"><?= $msg ?></div>
-                            <?php } ?>
                             <div class="table-responsive glass-table mb-3">
                                 <table class="table table-striped table-hover">
                                     <thead class="thead-dark">

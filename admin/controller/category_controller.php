@@ -11,7 +11,7 @@ class CategoryController
         }
     }
 
-    function addCategory($categoryName)
+    function addCategory($categoryName, $folder)
     {
         // Check if category already exists
         $stmt = $this->db->prepare("SELECT * FROM categories WHERE category_name = ?");
@@ -24,8 +24,8 @@ class CategoryController
         }
 
         // Insert new category
-        $stmt = $this->db->prepare("INSERT INTO categories (category_name) VALUES (?)");
-        $stmt->bind_param("s", $categoryName);
+        $stmt = $this->db->prepare("INSERT INTO categories (category_name, category_image) VALUES (?, ?)");
+        $stmt->bind_param("ss", $categoryName, $folder);
         return $stmt->execute();
     }
 
@@ -68,12 +68,22 @@ $categoryController = new CategoryController();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['submit'])) {
         $categoryName = $categoryController->db->real_escape_string($_POST['category_name']);
-        if ($categoryController->addCategory($categoryName)) {
-            $_SESSION['msg'] = "Category added successfully!";
-            header("Location: category.php");
-            exit();
+
+        $file = $_FILES['category_image']['name'];
+        $tname = $_FILES['category_image']['tmp_name'];
+        $folder = "../admin/asset/image/category/" . basename($file);
+
+        if (move_uploaded_file($tname, $folder)) {
+            $res = $categoryController->addCategory($categoryName, $folder);
+            if ($res) {
+                $_SESSION['msg'] = "Category added successfully!";
+                header("Location: category.php");
+                exit();
+            } else {
+                $_SESSION['msg'] = "Category name already exists.";
+            }
         } else {
-            $error_message = "Category name already exists.";
+            $_SESSION['msg'] = "Failed to upload image.";
         }
     } elseif (isset($_POST['update'])) {
         $categoryId = $_POST['category_id'];

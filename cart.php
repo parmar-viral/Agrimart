@@ -1,7 +1,6 @@
 <?php
 session_start();
-include 'admin/controller/database/db.php'; // Database connection
-
+include_once('admin/controller/cart_controller.php');
 // Check if user is logged in
 if (!isset($_SESSION['ID'])) {
     $loggedIn = false; // User is not logged in
@@ -9,12 +8,14 @@ if (!isset($_SESSION['ID'])) {
     $loggedIn = true; // User is logged in
     $user_id = $_SESSION['ID'];
 
-    // Fetch cart items for the logged-in user
-    $sql = "SELECT * FROM cart_items WHERE user_id = '$user_id'";
-    $res = mysqli_query($conn, $sql);
+    // Check for a success or error message in session
+    $msg = null;
+    if (isset($_SESSION['msg'])) {
+        $msg = $_SESSION['msg'];
+        unset($_SESSION['msg']); // Clear the message from the session after it's been displayed
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,6 +68,11 @@ if (!isset($_SESSION['ID'])) {
 
     <div class="row d-flex justify-content-center mt-3 mb-3">
         <div class="row">
+            <?php if ($msg) { ?>
+            <div class="alert alert-info text-center">
+                <?php echo $msg; ?>
+            </div>
+            <?php } ?>
             <div class="col-md-6 offset-md-3">
                 <div class="card mb-2">
                     <div class="card-header text text-dark text-center">
@@ -91,34 +97,37 @@ if (!isset($_SESSION['ID'])) {
                             </thead>
                             <tbody>
                                 <?php
-                                    if (mysqli_num_rows($res) > 0) {
-                                        while ($row = mysqli_fetch_assoc($res)) {
-                                            echo '<tr>';
-                                            echo '<td>' . $row['product_name'] . '</td>';
-                                            echo '<td>$' . $row['product_price'] . '</td>';
-                                            echo '<td>' . $row['quantity'] . '</td>';
-                                            echo '<td>$' . $row['total_price'] . '</td>';
-                                            echo '<td>
-                                                <div class="btn-group">
-                                                    <!-- Buy Form -->
-                                                    <form method="post" action="buy.php">
-                                                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
-                                                        <button type="submit" class="btn">Buy</button>
-                                                    </form>
+                                $res=$obj->view($user_id);
+                                if (!$res) {
+                                    echo '<div class="alert alert-danger">Error fetching cart items: ' . mysqli_error($conn) . '</div>';
+                                } else if (mysqli_num_rows($res) > 0) {
+                                    while ($row = mysqli_fetch_assoc($res)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['product_name']) . '</td>';
+                                        echo '<td>$' . number_format($row['product_price'], 2) . '</td>';
+                                        echo '<td>' . $row['quantity'] . '</td>';
+                                        echo '<td>$' . number_format($row['total_price'], 2) . '</td>';
+                                        echo '<td>
+                                            <div class="btn-group">
+                                                <!-- Buy Form -->
+                                                <form method="post" action="buy.php">
+                                                    <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                                                    <button type="submit" class="btn">Buy</button>
+                                                </form>
 
-                                                    <!-- Delete Form -->
-                                                    <form method="post" action="">
-                                                        <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
-                                                        <button type="submit" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
-                                                    </form>
-                                                </div>
-                                            </td>';
-                                            echo '</tr>';
-                                        }
-                                    } else {
-                                        echo '<tr><td colspan="5">Your cart is empty.</td></tr>';
+                                                <!-- Delete Form -->
+                                                <form method="post" action="">
+                                                    <input type="hidden" name="item_id" value="' . $row['product_id'] . '">
+                                                    <button type="submit" name="delete" class="btn" onclick="return confirm(\'Are you sure you want to delete this item?\');">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>';
+                                        echo '</tr>';
                                     }
-                                    ?>
+                                } else {
+                                    echo '<tr><td colspan="5">Your cart is empty.</td></tr>';
+                                }
+                                ?>
                             </tbody>
                         </table>
                         <?php endif; ?>
